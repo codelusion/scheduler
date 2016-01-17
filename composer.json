@@ -10,6 +10,7 @@
     }
   ],
   "require": {
-    "alexbilbie/proton": "^1.4"
+    "alexbilbie/proton": "^1.4",
+    "robmorgan/phinx": "^0.5.1"
   }
 }
