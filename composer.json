@@ -1,0 +1,15 @@
+{
+  "name": "codelusion/scheduler",
+  "description": "Shift Scheduler",
+  "minimum-stability": "dev",
+  "license": "ISC",
+  "authors": [
+    {
+      "name": "codelusion",
+      "email": "ash@aisaac.io"
+    }
+  ],
+  "require": {
+    "alexbilbie/proton": "^1.4"
+  }
+}
