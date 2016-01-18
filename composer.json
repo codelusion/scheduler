@@ -9,6 +9,11 @@
       "email": "ash@aisaac.io"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "Scheduler\\": "src/"
+    }
+  },
   "require": {
     "alexbilbie/proton": "^1.4",
     "robmorgan/phinx": "^0.5.1"
