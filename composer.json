@@ -16,6 +16,8 @@
   },
   "require": {
     "alexbilbie/proton": "^1.4",
-    "robmorgan/phinx": "^0.5.1"
+    "robmorgan/phinx": "^0.5.1",
+    "symfony/validator": "^3.0",
+    "j4mie/idiorm": "^1.5"
   }
 }
