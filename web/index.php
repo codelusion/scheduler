@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $app->get('/', function (Request $request, Response $response) use($app) {
-    return new JsonResponse($app['userRepository']->findAll());
+    return new JsonResponse($app['user_service']->findAllUsers());
 });
 
 $app->get('/hello/{name}', function ($request, $response, $args) {
