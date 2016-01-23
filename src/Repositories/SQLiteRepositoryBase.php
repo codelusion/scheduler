@@ -7,6 +7,8 @@ use ORM;
 
 use Scheduler\DomainEntity;
 
+use DateTime;
+
 class SQLiteRepositoryBase implements IRepository
 {
 
@@ -36,9 +38,9 @@ class SQLiteRepositoryBase implements IRepository
     public function save(DomainEntity $entity) {
         $DBModel = ORM::for_table($this->tableName)->create($entity->asArray());
         if (empty($DBModel->created_at)) {
-            $DBModel->set_expr('created_at', 'CURRENT_TIMESTAMP');
+            $DBModel->set('created_at', date(DateTime::RFC2822));
         }
-        $DBModel->set_expr('updated_at', 'CURRENT_TIMESTAMP');
+        $DBModel->set('updated_at', date(DateTime::RFC2822));
         try {
             $DBModel->save();
             $display = $entity->asArray()[$this->entityDisplayAttribute];
