@@ -36,9 +36,9 @@ class SQLiteRepositoryBase implements IRepository
     public function save(DomainEntity $entity) {
         $DBModel = ORM::for_table($this->tableName)->create($entity->asArray());
         if (empty($DBModel->created_at)) {
-            $DBModel->set('created_at', 'NOW()');
+            $DBModel->set_expr('created_at', 'CURRENT_TIMESTAMP');
         }
-        $DBModel->set('updated_at', 'NOW()');
+        $DBModel->set_expr('updated_at', 'CURRENT_TIMESTAMP');
         try {
             $DBModel->save();
             $display = $entity->asArray()[$this->entityDisplayAttribute];
