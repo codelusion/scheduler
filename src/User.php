@@ -19,8 +19,8 @@ class User extends DomainEntity {
         'role',
         'phone',
         'email',
-        'created_at',
-        'updated_at'
+        'createdAt',
+        'updatedAt'
     ];
 
 
@@ -28,6 +28,7 @@ class User extends DomainEntity {
     function __construct(Array $params, UserValidator $validator)
     {
         $this->params = $params;
+        $this->validator = $validator;
         $this->fromParams();
         parent::__construct($validator);
     }

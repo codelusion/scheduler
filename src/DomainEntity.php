@@ -2,6 +2,7 @@
 
 namespace Scheduler;
 
+use ICanBoogie\Inflector;
 
 use Scheduler\Validation\IEntityValidator;
 
@@ -15,6 +16,7 @@ class DomainEntity
     public function __construct(IEntityValidator $validator)
     {
         $this->validator = $validator;
+        $this->inflector = Inflector::get();
     }
 
     public function fromArray($data)
@@ -25,13 +27,16 @@ class DomainEntity
 
     protected function validate()
     {
+        if (empty($this->validator)) {
+            throw new \InvalidArgumentException('validator is missing');
+        }
         $this->validator->validate($this);
     }
 
     protected function fromParams()
     {
         foreach ($this->attributes as $attribute) {
-            if (!in_array($attribute, ['id', 'created_at', 'updated_at'])) {
+            if (!in_array($attribute, ['id', 'createdAt', 'updatedAt'])) {
                 $this->$attribute = $this->params[$attribute];
             }
         }
@@ -56,7 +61,7 @@ class DomainEntity
     {
         $data = [];
         foreach ($this->attributes as $field) {
-            $data[$field] = $this->$field;
+            $data[$this->inflector->underscore($field)] = $this->$field;
         }
         return $data;
     }
