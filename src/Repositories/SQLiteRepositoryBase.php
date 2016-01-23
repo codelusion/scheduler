@@ -7,10 +7,10 @@ use ORM;
 
 use Scheduler\DomainEntity;
 
-class SQLiteRepositoryBase
+class SQLiteRepositoryBase implements IRepository
 {
 
-    const DUPLICATE_ENTRY = "23000";
+    const INTEGRITY_EXCEPTION = "23000";
     protected $tableName = '';
     protected $entityName = '';
     protected $entityDisplayAttribute = '';
@@ -34,23 +34,32 @@ class SQLiteRepositoryBase
     }
 
     public function save(DomainEntity $entity) {
-        $DB = ORM::for_table($this->tableName)->create($entity->asArray());
+        $DBModel = ORM::for_table($this->tableName)->create($entity->asArray());
+        if (empty($DBModel->created_at)) {
+            $DBModel->set('created_at', 'NOW()');
+        }
+        $DBModel->set('updated_at', 'NOW()');
         try {
-            $DB->save();
-            $result = ['result' => $DB->id(), 'message' => "{$this->entityName} successfully saved"];
+            $DBModel->save();
+            $display = $entity->asArray()[$this->entityDisplayAttribute];
+            $result = ['result' => $DBModel->id(), 'message' => "{$this->entityName}: {$display} successfully saved"];
         } catch (\PDOException $e) {
-            if ($e->getCode() == self::DUPLICATE_ENTRY) {
-                $result = ['result' => false, 'message' => "{$this->entityName}: {$this->entityDisplayAttribute} already exists"];
+            if ($e->getCode() == self::INTEGRITY_EXCEPTION) {
+                $result = ['result' => false, 'message' => implode(' - ', $e->errorInfo) ];
             } else {
                 throw $e;
             }
         }
-
         return $result;
     }
 
     public function findAll()
     {
         return ORM::for_table($this->tableName)->find_array();
+    }
+
+    public function find(Array $params)
+    {
+        return ORM::for_table($this->tableName)->where($params)->find_array();
     }
 }
