@@ -22,15 +22,15 @@ class ValidationHelper {
     }
 
     public function validName($name) {
-        return $this->validator->validateValue($name, new Assert\NotNull());
+        return $this->validator->validate($name, new Assert\NotNull());
     }
 
     public function validEmail($email) {
-        return $this->validator->validateValue($email, new Assert\Email());
+        return $this->validator->validate($email, new Assert\Email());
     }
 
     public function validPhone($phone) {
-        return $this->validator->validateValue($phone, new Assert\NotNull());
+        return $this->validator->validate($phone, new Assert\NotNull());
     }
 
 
